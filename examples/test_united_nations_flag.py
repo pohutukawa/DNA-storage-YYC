@@ -13,8 +13,8 @@ if __name__ == "__main__":
                       search_count=100, max_homopolymer=4, max_content=0.6)
     pipeline.encode(
         method=tool,
-        input_path=read_file_path,
-        output_path=dna_path,
+        input_data=read_file_path,
+        output_data=dna_path,
         model_path=model_path,
         need_index=True,
         need_log=True
@@ -22,8 +22,8 @@ if __name__ == "__main__":
     del tool
     pipeline.decode(
         model_path=model_path,
-        input_path=dna_path,
-        output_path=write_file_path,
+        input_data=dna_path,
+        output_data=write_file_path,
         has_index=True,
         need_log=True
     )

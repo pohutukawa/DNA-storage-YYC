@@ -8,12 +8,18 @@ Current Version: 1
 Function(s): Output the logs in console.
 """
 
+import logging
 
-import time
 
 NORMAL = 0
 WARN = 1
 ERROR = 2
+
+_LOG_LEVEL = {
+    NORMAL: logging.INFO,
+    WARN: logging.WARN,
+    ERROR: logging.ERROR,
+}
 
 
 # noinspection SpellCheckingInspection
@@ -36,27 +42,5 @@ def output(info_type=0, class_name=None, method_name=None, info=None):
     :param info: The information hat users want to display in console.
                   Type: String
     """
-
-    if class_name is None or method_name is None:
-        # string = "[" + time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) + "] " + info
-        string = info
-    else:
-        # string = "[" + time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) + "] " + class_name + " -> " + method_name + " : " + info
-        string = class_name + " -> " + method_name + " : " + info
-
-    if info_type == NORMAL:
-        # Print normal
-        print(string)
-    elif info_type == WARN:
-        # Print yellow and high light.
-        print("\033[1;32;0m" + string + "\033[0m")
-    elif info_type == ERROR:
-        # Print red and high light.
-        print("\033[1;31;0m" + string + "\033[0m")
-        # End the program immediately.
-        exit(1)
-    else:
-        # Print red and high light.
-        print("\033[1;31;0m" + "Info type is wrong" + "\033[0m")
-        # End the program immediately.
-        exit(1)
+    logger = logging.getLogger(class_name)
+    logger.log(_LOG_LEVEL[info_type], f"{method_name}: {info}")
