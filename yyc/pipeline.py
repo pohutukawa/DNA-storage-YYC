@@ -65,7 +65,7 @@ def encode(method, input_data: typing.Union[str, typing.BinaryIO],
 
     dna_sequences = method.encode(input_matrix, size, need_log)
 
-    if model_path is not None:
+    if model_path:
         model_saver.save_model(model_path, {"method": method, "verify": verify})
 
     data_handle.write_dna_file(output_data, dna_sequences, need_log)
@@ -105,7 +105,7 @@ def decode(method=None, model_path=None,
     :param need_log: Show the log.
     """
 
-    if method is None and model_path is None:
+    if not method and not model_path:
         logging.error("The method you select does not exist!")
     else:
         if not input_data:

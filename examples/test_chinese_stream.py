@@ -9,7 +9,9 @@ model_path = "./output/Text2.pkl"
 write_file_path = "./output/Text2.txt"
 
 if __name__ == "__main__":
-    [support_base, rule1, rule2] = ["A", [0, 1, 0, 1], [[1, 1, 0, 0], [1, 0, 0, 1], [1, 1, 0, 0], [1, 1, 0, 0]]]
+    support_base = "A"
+    rule1 = [0, 1, 0, 1]
+    rule2 = [[1, 1, 0, 0], [1, 0, 0, 1], [1, 1, 0, 0], [1, 1, 0, 0]]
     tool = scheme.YYC(support_bases=support_base, base_reference=rule1, current_code_matrix=rule2,
                       search_count=100, max_homopolymer=4, max_content=0.6)
     source_stream = io.BytesIO(open(read_file_path, "rb").read())
@@ -18,26 +20,27 @@ if __name__ == "__main__":
         method=tool,
         input_data=source_stream,
         output_data=dna_stream,
-        model_path=model_path,
-        need_index=True,
-        need_log=True
+        # model_path=model_path,
+        # need_index=True,
+        # need_log=True
     )
     with open(dna_path, "wb") as fd:
         dna_stream.seek(0)
-        fd.write(dna_stream.read())
-    del tool
+        fd.write(dna_stream.getvalue())
+    # del tool
     dna_stream.seek(0)
     output_stream = io.BytesIO()
     pipeline.decode(
-        model_path=model_path,
+        method=tool,
+        # model_path=model_path,
         input_data=dna_stream,
         output_data=output_stream,
-        has_index=True,
-        need_log=True
+        # has_index=True,
+        # need_log=True
     )
     with open(write_file_path, "wb") as fd:
         output_stream.seek(0)
-        fd.write(output_stream.read())
+        fd.write(output_stream.getvalue())
 
     # compare two file
     matrix_1, _ = data_handle.read_binary_from_all(read_file_path, 120, False)

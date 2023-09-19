@@ -6,8 +6,16 @@ build/
 # cache file
 __pycache__/
 
+# Editor backup files
+*.bak
+*~
+
 # Pycharm entries
 .idea/
+
+# Eclipse project files
+.project
+.pydevproject
 
 examples/output/*
 !examples/output/note.md
